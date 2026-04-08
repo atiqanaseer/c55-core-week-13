@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./task-1
+
+      - name: Run linter
+        run: npm run lint
+        working-directory: ./task-1
+
+      - name: Run unit tests
+        run: npm test
+        working-directory: ./task-1
+
+      - name: Build the React application
+        run: npm run build
+        working-directory: ./task-1
+
+      - name: Zip the build output
+        run: zip -r task-1-dist.zip task-1/dist
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: task-1-dist.zip
