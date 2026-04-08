@@ -34,10 +34,10 @@ jobs:
         working-directory: ./task-1
 
       - name: Zip the build output
-        run: zip -r task-1-dist.zip task-1/dist
+        run: zip -r build.zip dist
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: build-artifact
-          path: task-1/dist/task-1-dist.zip
+          path: task-1/build.zip
